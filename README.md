@@ -14,8 +14,10 @@ UPDATE Addresses
 SET PlusCode = dbo.GetOpenLocationCode(Latitude, Longitude, default)
 WHERE PlusCode is null
 ```
+
 # Tests
 
+```SQL
 select dbo.GetOpenLocationCode(40.6892474, -74.0445405, default) -- Statue of liberty, expected result: 87G7MXQ4+M5
 select dbo.GetOpenLocationCode(48.858260200000004, 2.2944990543196795, default) -- Eiffel Tower, expected result: 8FW4V75V+8Q
- 
+```
