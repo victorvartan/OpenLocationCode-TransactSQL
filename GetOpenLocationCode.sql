@@ -14,10 +14,10 @@ CREATE FUNCTION [dbo].[GetOpenLocationCode]
     @longitude DECIMAL(9,6),
     @codeLength INT = 10
 )
-RETURNS VARCHAR(MAX)
+RETURNS VARCHAR(16)
 AS
 BEGIN
-    DECLARE @code VARCHAR(MAX) = '';
+    DECLARE @code VARCHAR(16) = '';
     DECLARE @CodePrecisionNormal INT = 10; -- Provides a normal precision code, approximately 14x14 meters.
     DECLARE @CodePrecisionExtra INT = 11; -- Provides an extra precision code, approximately 2x3 meters.
     DECLARE @Separator CHAR(1) = '+'; -- A separator used to break the code into two parts to aid memorability.
@@ -44,9 +44,9 @@ BEGIN
     IF (@latitude = @LatitudeMax)
     BEGIN
         DECLARE @latitudePrecission DECIMAL(9,6);
-        IF (@codeLength <= @CodePrecisionNormal) SET @latitudePrecission = POWER(@EncodingBase, @codeLength / -2 + 2);
-        ELSE SET @latitudePrecission = POWER(@EncodingBase, -3) / POWER(@GridRows, @codeLength - @PairCodeLength);
-        SET @latitude = @latitude - 0.9 * @latitudePrecission;
+        IF (@codeLength <= @CodePrecisionNormal) SET @latitudePrecision = POWER(@EncodingBase, (@codeLength / -2) + 2);
+        ELSE SET @latitudePrecision = POWER(@EncodingBase, -3) / POWER(@GridRows, @codeLength - @PairCodeLength);
+        SET @latitude = @latitude - 0.9 * @latitudePrecision;
     END
 
     -- Adjust latitude and longitude to be in positive number ranges.
